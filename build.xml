@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+
+<project name="eSciDocCoreCommon" default="jar" basedir=".">
+
+	<property name="build.dir" value="build" />
+	<property name="src.dir" value="src" />
+	<property name="dist.dir" value="dist" />
+	<property name="lib.dir" value="lib" />
+	<property name="classes.dir" value="${build.dir}/classes" />
+
+	<path id="classpath">
+		<pathelement path="${classpath}" />
+		<fileset dir="${lib.dir}" includes="**/*.jar" />
+	</path>
+
+	<!-- Cleans the output folders -->
+	<target name="clean" description="Cleans the output folders">
+		<delete includeEmptyDirs="true">
+			<fileset dir="${build.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</delete>
+		<delete includeEmptyDirs="true">
+			<fileset dir="${dist.dir}">
+				<include name="**/*"/>
+			</fileset>
+		</delete>
+	</target>
+
+	<!-- Creates the output folders -->
+	<target name="prepare" depends="clean" description="Creates the output folders">
+		<mkdir dir="${classes.dir}"/>
+	</target>
+
+  	<!-- Kompilieren -->
+  	<target name="compile" depends="prepare" description="Compiles source code">
+     	<javac destdir="${classes.dir}" debug="on">
+			<classpath refid="classpath"/>
+			<src path="${src.dir}"/>
+     	</javac>
+  	</target>
+
+  	<!-- Archiv erzeugen -->
+  	<target name="jar" depends="compile" description="Generates common.jar in the 'dist' directory.">
+     	<!-- Exclude unit tests from the final JAR file -->
+     	<jar jarfile="${dist.dir}/common.jar" 
+			basedir="${classes.dir}"/>
+		<delete includeEmptyDirs="true">
+			<fileset dir="${build.dir}">
+				<include name="**/classes/**/*"/>
+			</fileset>
+		</delete>
+  	</target>
+
+</project>
