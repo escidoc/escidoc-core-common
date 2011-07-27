@@ -83,21 +83,7 @@ public final class EscidocConfiguration
         }
         catch(IOException e)
         {
-            try
-            {
-                result = getProperties((new StringBuilder()).append(PROPERTIES_BASEDIR).append("escidoc-core.properties").toString());
-            }
-            catch(IOException e1)
-            {
-                try
-                {
-                    result = getProperties((new StringBuilder()).append(PROPERTIES_DIR).append("escidoc-core.properties").toString());
-                }
-                catch(IOException e2)
-                {
-                    throw new SystemException("properties not found.");
-                }
-            }
+            throw new SystemException("properties not found.");
         }
         if(LOG.isDebugEnabled())
             LOG.debug((new StringBuilder()).append("Default properties: ").append(result).toString());
@@ -108,21 +94,7 @@ public final class EscidocConfiguration
         }
         catch(IOException e)
         {
-            try
-            {
-                specific = getProperties((new StringBuilder()).append(PROPERTIES_BASEDIR).append("escidoc-core.custom.properties").toString());
-            }
-            catch(IOException e1)
-            {
-                try
-                {
-                    specific = getProperties((new StringBuilder()).append(PROPERTIES_DIR).append("escidoc-core.custom.properties").toString());
-                }
-                catch(IOException e2)
-                {
-                    specific = new Properties();
-                }
-            }
+            specific = new Properties();
         }
         if(LOG.isDebugEnabled())
             LOG.debug((new StringBuilder()).append("Specific properties: ").append(specific).toString());
@@ -134,7 +106,7 @@ public final class EscidocConfiguration
         }
         catch(IOException e)
         {
-            throw new SystemException("constant properties not found.");
+            constant = new Properties();
         }
         if(LOG.isDebugEnabled())
             LOG.debug((new StringBuilder()).append("Constant properties: ").append(constant).toString());
@@ -251,8 +223,6 @@ public final class EscidocConfiguration
     public static final String ESCIDOC_CORE_QUEUE_PASSWORD = "escidoc-core.queue.password";
     public static final String ESCIDOC_CORE_DATASOURCE_INDEX_PREFIX_LENGTH = "escidoc-core.datasource.index.prefix.length";
     public static final String CONTENT_RELATIONS_URL = "escidoc-core.ontology.url";
-    private static final String TRUE = "true";
-    private static final String ONE = "1";
     public static final String ESCIDOC_CORE_AA_CACHE_ROLES_SIZE = "escidoc-core.aa.cache.roles.size";
     public static final String ESCIDOC_CORE_AA_CACHE_USERS_SIZE = "escidoc-core.aa.cache.users.size";
     public static final String ESCIDOC_CORE_AA_CACHE_GROUPS_SIZE = "escidoc-core.aa.cache.groups.size";
@@ -264,14 +234,8 @@ public final class EscidocConfiguration
     public static final String ESCIDOC_CORE_INDEXER_CACHE_SIZE = "escidoc-core.om.indexer.cache.size";
     public static final String DIGILIB_SCALER = "digilib.scaler";
     public static final String DIGILIB_CLIENT = "digilib.digimage";
-    private static final String CATALINA_HOME = "catalina.home";
     private static final AppLogger LOG = new AppLogger(EscidocConfiguration.class.getName());
     private static EscidocConfiguration instance = null;
     private final Properties properties = loadProperties();
-    private static final String PROPERTIES_BASEDIR = (new StringBuilder()).append(System.getProperty("catalina.home")).append("/").toString();
-    private static final String PROPERTIES_DIR = (new StringBuilder()).append(PROPERTIES_BASEDIR).append("conf/").toString();
-    private static final String PROPERTIES_FILENAME = "escidoc-core.custom.properties";
-    private static final String PROPERTIES_DEFAULT_FILENAME = "escidoc-core.properties";
-    private static final String PROPERTIES_CONSTANT_FILENAME = "escidoc-core.constant.properties";
 
 }
